@@ -129,7 +129,7 @@ Only include sections with entries.
 
 ### B.5 Show ONE summary, ask ONE question
 
-Render to the user:
+First render the summary block to the chat (so the plan stays visible):
 
 ```
 Release plan:
@@ -139,18 +139,27 @@ Release plan:
                   ...
   Trust         ✓ already configured (provenance present for v{LATEST_VERSION})
   CHANGELOG     {first 4 lines visible; "expand" to show the full draft}
-
-Proceed? (yes / version=X.Y.Z / edit changelog / abort)
 ```
 
-Wait for the user's answer. **Do not act yet.**
+Then call the `AskUserQuestion` tool (load via `ToolSearch query="select:AskUserQuestion"` if its schema isn't loaded yet) with:
 
-- `yes` → continue to Phase C
-- `version=X.Y.Z` → set `NEXT_VERSION = X.Y.Z`, re-render the summary at B.5, ask again
-- `edit changelog` → open the CHANGELOG draft in `$EDITOR`, on save re-render summary, ask again
-- `abort` → no state changes; end the skill
+- `header`: `"Release"`
+- `question`: `"Approve the release plan above?"`
+- `multiSelect`: `false`
+- `options` (in order):
+  1. `Proceed` — Run Phase C (commit, tag, CI publish)
+  2. `Override version` — Specify a different version (X.Y.Z)
+  3. `Edit changelog` — Open CHANGELOG draft in `$EDITOR`
+  4. `Abort` — No changes; end the skill
 
-There is no fallback to multi-prompt mode. One summary, one answer.
+Wait for the user's selection. **Do not act yet.** Then branch:
+
+- `Proceed` → continue to Phase C
+- `Override version` → ask the user (free-form follow-up) for the new version, set `NEXT_VERSION = X.Y.Z`, re-render the summary, and call `AskUserQuestion` again
+- `Edit changelog` → open the CHANGELOG draft in `$EDITOR`, on save re-render the summary and call `AskUserQuestion` again
+- `Abort` → no state changes; end the skill
+
+There is no fallback to free-text "yes/no" prompts. One summary, one structured prompt, one answer.
 
 ## Phase C — Execute
 

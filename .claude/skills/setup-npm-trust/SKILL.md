@@ -102,10 +102,18 @@ Expected first stdout line:
 - `Detected npm/yarn workspace — found N packages` for `package.json#workspaces`.
 - `Detected single package — found 1 packages` for repos with a single root `package.json`.
 
-If the output is `Error: --auto could not detect…`, **stop** and ask the user
-whether to use `--scope <scope>` (org-based registry discovery) or
-`--packages <names...>` (explicit list) instead. Use the chosen source flag
-in every subsequent step.
+If the output is `Error: --auto could not detect…`, call `AskUserQuestion`
+(loading via `ToolSearch query="select:AskUserQuestion"` if needed) with:
+
+- `header`: `"Source flag"`
+- `question`: `"--auto couldn't detect the workspace. How should packages be discovered?"`
+- options:
+  1. `Use --scope` — Discover via npm registry under a scope (e.g. `--scope @myorg`)
+  2. `Use --packages` — Explicit list of package names
+  3. `Abort` — Stop the wizard
+
+Use the chosen source flag in every subsequent step. For `Use --scope` and
+`Use --packages`, follow up free-form to capture the scope or names.
 
 ### 2. Resolve the GitHub repo
 
@@ -113,7 +121,14 @@ in every subsequent step.
 git remote get-url origin
 ```
 
-Parse `owner/repo` from the URL and confirm with the user.
+Parse `owner/repo` from the URL, then call `AskUserQuestion` to confirm:
+
+- `header`: `"GitHub repo"`
+- `question`: `"Use {inferred owner/repo} as the GitHub repo for OIDC trust?"`
+- options:
+  1. `Confirm` — Use the inferred slug
+  2. `Override` — Specify a different `owner/repo` (free-form follow-up)
+  3. `Abort` — Stop the wizard
 
 ### 3. Resolve the publish workflow
 
@@ -123,8 +138,15 @@ List candidate workflow files:
 ls .github/workflows/*.yml .github/workflows/*.yaml 2>/dev/null
 ```
 
-If exactly one file exists, suggest it. Otherwise ask the user which workflow
-performs the npm publish.
+If exactly one file exists, use it without prompting. Otherwise call
+`AskUserQuestion`:
+
+- `header`: `"Workflow"`
+- `question`: `"Which workflow performs the npm publish?"`
+- options: one entry per candidate file (label is the basename, e.g.
+  `release.yml`). Cap at 4 options. If more than 4 candidates exist,
+  show the 3 most likely (any file containing `release`, `publish`, or
+  `npm` in the name) plus rely on the auto-`Other` choice for the rest.
 
 ### 4. Show current trust state
 
@@ -157,7 +179,7 @@ precise working set for this run.
 
 ### 6. Confirm with user
 
-Print a summary like:
+Render the summary as text (so it stays visible in the chat):
 
 ```
 Detected: <source>, <N> packages
@@ -170,7 +192,13 @@ Needs work:         <M>
 Plan: configure OIDC trust for <M> packages.
 ```
 
-Pause and wait for the user to confirm before continuing.
+Then call `AskUserQuestion` to gate Phase 2:
+
+- `header`: `"Setup plan"`
+- `question`: `"Proceed with the plan above?"`
+- options:
+  1. `Proceed` — Run Phase 2 (auth gate, dry-run, configure, verify)
+  2. `Abort` — Stop the wizard, no state changes
 
 ## Phase 2 — Execute
 
@@ -267,3 +295,34 @@ If `Z > 0`, remind the user that those packages still need publishing.
   read-only or `npm trust github` (which is idempotent — re-running on an
   already-configured package returns "already configured").
 - `--doctor` is the fast path for v0.4.0+ CLIs (see Phase 1 opener above).
+
+## Recommended conventions
+
+These are conventions the maintainer recommends for repos that adopt
+`npm-trust-cli`. They are not enforced by the CLI — adopt them for
+consistency across projects.
+
+### Use `AskUserQuestion` for every human decision
+
+When this skill (or any skill that builds on it) needs a decision from
+the user — proceed/abort, pick a workflow, override an inferred value —
+the agent **must** call the `AskUserQuestion` tool. Do not write a free-
+text question and stop. Free-text prompts are too easy to miss against
+the surrounding agent output; the structured selector is unmissable.
+
+### npm script naming: `npm-trust:setup`, not `setup:npm-trust`
+
+Recommend that consumers expose the wizard under a `npm-trust:setup`
+script (namespace before verb), so scripts grouped by tool sort together
+and match the prevailing pnpm/monorepo convention:
+
+```json
+{
+  "scripts": {
+    "npm-trust:setup": "npm-trust-cli --auto --repo <owner/repo> --workflow <file>"
+  }
+}
+```
+
+The older `setup:npm-trust` ordering is discouraged; rename when you
+encounter it.

@@ -21,8 +21,8 @@ importers:
         specifier: ^9.1.7
         version: 9.1.7
       npm-trust-cli:
-        specifier: ^0.4.0
-        version: 0.4.0
+        specifier: ^0.5.0
+        version: 0.5.0
       tsdown:
         specifier: ^0.21.7
         version: 0.21.7(@emnapi/core@1.9.2)(@emnapi/runtime@1.9.2)(typescript@6.0.2)
@@ -823,8 +823,8 @@ packages:
     engines: {node: ^10 || ^12 || ^13.7 || ^14 || >=15.0.1}
     hasBin: true
 
-  npm-trust-cli@0.4.0:
-    resolution: {integrity: sha512-jqbfjQ0hHnUOTif38PYsi8e14z5FMY4ky2pMzcTRZBZkcWr8khMKwm/v2R+TaBSzc6Q/BZCNe9mXV0b4Wnu90A==}
+  npm-trust-cli@0.5.0:
+    resolution: {integrity: sha512-p1GTHUf/dPh5h2lvJKMQPC+SsnMYiTNQ3m/Kg0i9IMfvUgehULpZxiogHD8mjIVxfYUa9ouea2Ew+YzR+ayLGQ==}
     engines: {node: '>=24.0.0', npm: '>=11.5.1'}
     hasBin: true
 
@@ -1795,7 +1795,7 @@ snapshots:
 
   nanoid@3.3.11: {}
 
-  npm-trust-cli@0.4.0: {}
+  npm-trust-cli@0.5.0: {}
 
   obug@2.1.1: {}
 

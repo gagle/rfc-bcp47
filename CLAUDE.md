@@ -53,7 +53,7 @@ pnpm test             # vitest run
 pnpm run test:watch   # vitest in watch mode
 pnpm run test:coverage # vitest run --coverage (no threshold enforced)
 pnpm run dev:pages    # build + copy ESM bundle to github-pages/
-pnpm run setup:npm-trust  # run the OIDC trust setup wizard (npm-trust-cli@0.4.0)
+pnpm run npm-trust:setup  # run the OIDC trust setup wizard (npm-trust-cli@0.5.0)
 ```
 
 ## Conventions
