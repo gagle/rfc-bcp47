@@ -1,0 +1,12 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "rootDir": ".",
+    "noEmit": true,
+    "paths": {
+      "rfc-bcp47": ["./src/index.ts"]
+    }
+  },
+  "include": ["src", "examples"],
+  "exclude": ["node_modules", "dist"]
+}
