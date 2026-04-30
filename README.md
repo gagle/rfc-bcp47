@@ -14,6 +14,17 @@
   <a href="./LICENSE"><img src="https://img.shields.io/npm/l/rfc-bcp47.svg" alt="license"></a>
 </p>
 
+---
+
+> **Built with AI, end to end.** Every line in this repo &mdash; source, tests, docs, release scripts &mdash; is generated, reviewed, and verified through [Claude Code](https://docs.anthropic.com/en/docs/claude-code), the same way [`npm-trust-cli`](https://github.com/gagle/npm-trust-cli) is built.
+>
+> - **Strict conventions enforced by the agent.** `.claude/rules/` pin TypeScript strict mode, `Array<T>`, `readonly` by default, no `any`, semantic naming (no `data` / `result` / `item`), and 18 testing rules &mdash; applied on every change without manual review.
+> - **Bundled Claude Code skills** (`commit`, `verify`, `review`, `release`, `testing`) that drive the full lifecycle: lint &rarr; build &rarr; test &rarr; conventional commit &rarr; tag-triggered release with SLSA provenance via OIDC trusted publishing.
+> - **Co-located Vitest specs for every operator** (`parse`, `canonicalize`, `filter`, `lookup`, `extensionU` / `extensionT`, `acceptLanguage`). The agent writes the failing test first, then makes it pass &mdash; `pnpm test` is the regression net, not a checkbox.
+> - **PRs disabled by design.** Contributors can't push code directly; the maintainer takes [issues](https://github.com/gagle/rfc-bcp47/issues) and [discussions](https://github.com/gagle/rfc-bcp47/discussions) through Claude Code. See [`CONTRIBUTING.md`](./CONTRIBUTING.md) for the full process.
+
+---
+
 - **Parse** any BCP 47 language tag into a structured, typed object
 - **Stringify** a tag object back into a well-formed language tag string
 - **Canonicalize** with case normalization and [IANA registry](https://www.iana.org/assignments/language-subtag-registry/language-subtag-registry) data (deprecated subtags, suppress-script, extlang)
