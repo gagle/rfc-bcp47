@@ -2,7 +2,7 @@
 name: setup-npm-trust
 description: >
   Guided wizard to enable or extend npm OIDC Trusted Publishing across the
-  packages in the current repo. Resolves the right `npm-trust-cli` invocation,
+  packages in the current repo. Resolves the right `npm-trust` invocation,
   detects the workspace shape, shows current trust state, filters to packages
   still needing setup, walks the user through any required manual steps
   (`npm login`, web 2FA, `npm publish`), runs the configuration, and verifies
@@ -11,7 +11,7 @@ description: >
 
 # Setup npm-trust
 
-Interactive wizard for `npm-trust-cli`. The CLI handles detection, filtering,
+Interactive wizard for `npm-trust`. The CLI handles detection, filtering,
 and per-package configuration. This skill orchestrates the end-to-end flow:
 gather inputs → confirm → handle manual steps → execute → verify.
 
@@ -23,31 +23,31 @@ gather inputs → confirm → handle manual steps → execute → verify.
 
 ## Pre-flight — resolve the CLI invocation
 
-Different hosts reach `npm-trust-cli` differently (source checkout, devDep,
+Different hosts reach `npm-trust` differently (source checkout, devDep,
 global install, npx fetch). Decide which to use **once**, then use the same
 invocation in every step below. Try in this order and stop at the first match:
 
-1. **Source checkout.** If `./bin/npm-trust-cli.js` exists AND
-   `node -p "require('./package.json').name"` prints `npm-trust-cli`, use:
+1. **Source checkout.** If `./bin/npm-trust.js` exists AND
+   `node -p "require('./package.json').name"` prints `npm-trust`, use:
    ```
-   <CLI> = node ./bin/npm-trust-cli.js
+   <CLI> = node ./bin/npm-trust.js
    ```
-2. **Local devDependency.** If `./node_modules/.bin/npm-trust-cli` is
+2. **Local devDependency.** If `./node_modules/.bin/npm-trust` is
    executable:
    ```
-   <CLI> = ./node_modules/.bin/npm-trust-cli
+   <CLI> = ./node_modules/.bin/npm-trust
    ```
-3. **Global install.** If `command -v npm-trust-cli` succeeds:
+3. **Global install.** If `command -v npm-trust` succeeds:
    ```
-   <CLI> = npm-trust-cli
+   <CLI> = npm-trust
    ```
 4. **Registry fetch (last resort).** Otherwise fall back to:
    ```
-   <CLI> = npx -y npm-trust-cli@latest
+   <CLI> = npx -y npm-trust@latest
    ```
 
 If your shell's `npx` form rejects the package (some npm 11 setups require
-`npm exec --` instead), substitute `npm exec -- npm-trust-cli@latest` for
+`npm exec --` instead), substitute `npm exec -- npm-trust@latest` for
 the npx fallback.
 
 Use the chosen invocation in **every** subsequent step. Below, `<CLI>` is the
@@ -63,7 +63,7 @@ placeholder — replace mentally.
 
 If the result is `TOO_OLD`, the resolved binary predates `--auto` (added in
 v0.2.0). **Stop** and ask the user to upgrade with
-`npm i -g npm-trust-cli@latest` (or remove the cached version that resolved).
+`npm i -g npm-trust@latest` (or remove the cached version that resolved).
 
 ## Phase 1 — Discover (one call when --doctor is supported)
 
@@ -161,7 +161,7 @@ trust configuration or `(no trust configured)`.
 > hood) sometimes reports `(no trust configured)` even when OIDC publishing
 > demonstrably works — this happens when Trusted Publishing was set up via
 > npm's web UI rather than the CLI, or when the CLI's auth state is stale.
-> Recent versions of `npm-trust-cli` cross-check via `npm view <pkg>
+> Recent versions of `npm-trust` cross-check via `npm view <pkg>
 > dist.attestations` to flag this; if you see a `(provenance present)` marker
 > in the output, treat the package as effectively configured even if the
 > trust line is empty.
@@ -299,7 +299,7 @@ If `Z > 0`, remind the user that those packages still need publishing.
 ## Recommended conventions
 
 These are conventions the maintainer recommends for repos that adopt
-`npm-trust-cli`. They are not enforced by the CLI — adopt them for
+`npm-trust`. They are not enforced by the CLI — adopt them for
 consistency across projects.
 
 ### Use `AskUserQuestion` for every human decision
@@ -319,7 +319,7 @@ and match the prevailing pnpm/monorepo convention:
 ```json
 {
   "scripts": {
-    "npm-trust:setup": "npm-trust-cli --auto --repo <owner/repo> --workflow <file>"
+    "npm-trust:setup": "npm-trust --auto --repo <owner/repo> --workflow <file>"
   }
 }
 ```
