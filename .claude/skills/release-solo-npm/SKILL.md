@@ -1,5 +1,5 @@
 ---
-name: release
+name: release-solo-npm
 description: >
   Designed for AI-driven solo dev where PRs are disabled. Tag-triggered
   npm release with OIDC provenance and ONE human approval — that's the
@@ -26,7 +26,7 @@ review code, no second pair of human eyes. You want releases that are:
 
 This skill drives the whole flow end-to-end with **one** human
 checkpoint (a structured `AskUserQuestion` selector — unmissable,
-unmistakable). Type `/release`, review the plan once, click `Proceed`,
+unmistakable). Type `/release-solo-npm`, review the plan once, click `Proceed`,
 get a notification when the tarball is on npm with provenance.
 
 ## How it works
