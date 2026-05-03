@@ -3,7 +3,7 @@
 
 function truncate(subtags: Array<string>): Array<string> {
   subtags.pop();
-  while (subtags.length > 0 && subtags[subtags.length - 1]!.length === 1) {
+  while (subtags.at(-1)?.length === 1) {
     subtags.pop();
   }
   return subtags;

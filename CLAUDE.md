@@ -15,7 +15,7 @@ release lands with a SLSA provenance attestation.
 
 - TypeScript 6.x strict ESM — `"type": "module"`, `target: ES2022`,
   `module: ESNext`, `moduleResolution: bundler`.
-- Node.js **>= 20** (see `package.json#engines`).
+- Node.js **>= 24** (see `package.json#engines`; pinned via `.nvmrc`).
 - **tsdown** for the build (single-pass bundler producing ESM + CJS + types +
   source maps in one go).
 - Vitest + `@vitest/coverage-v8` for tests. No enforced coverage threshold.
@@ -107,5 +107,7 @@ the manual steps.
   empty. devDependencies are fine; runtime deps require explicit justification.
 - **Don't break the dual ESM/CJS surface.** `package.json#exports` is the
   contract. tsdown emits both; changes that drop one would break consumers.
-- **Don't bump Node engine without discussion.** Currently `>=20`. Many users
-  pin Node 20 for stability.
+- **Node engine is pinned to `>=24`** via `package.json#engines` and `.nvmrc`.
+  All workflows read the version from `.nvmrc` (`node-version-file: .nvmrc`),
+  so a bump is a one-line edit. Source uses ES2024 features (`toSorted`,
+  `at(-1)`, etc.) that depend on the Node 24 baseline.

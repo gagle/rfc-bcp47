@@ -76,17 +76,9 @@ function canonicalizeTag(tag: BCP47Tag): BCP47Tag {
     return extension;
   });
 
-  const sorted = canonicalizedExtensions.length > 1
-    ? [...canonicalizedExtensions].sort((left, right) => {
-      if (left.singleton < right.singleton) {
-        return -1;
-      }
-      if (left.singleton > right.singleton) {
-        return 1;
-      }
-      return 0;
-    })
-    : canonicalizedExtensions;
+  const sorted = canonicalizedExtensions.toSorted((left, right) =>
+    left.singleton < right.singleton ? -1 : left.singleton > right.singleton ? 1 : 0,
+  );
 
   return {
     type: 'langtag',
@@ -129,15 +121,9 @@ function canonicalizeUExtension(extension: { readonly singleton: string; readonl
     keywords.push({ key: currentKey, values: currentValues });
   }
 
-  keywords.sort((left, right) => {
-    if (left.key < right.key) {
-      return -1;
-    }
-    if (left.key > right.key) {
-      return 1;
-    }
-    return 0;
-  });
+  keywords.sort((left, right) =>
+    left.key < right.key ? -1 : left.key > right.key ? 1 : 0,
+  );
 
   attributes.sort();
 
@@ -175,15 +161,9 @@ function canonicalizeTExtension(extension: { readonly singleton: string; readonl
     fields.push({ key: currentKey, values: currentValues });
   }
 
-  fields.sort((left, right) => {
-    if (left.key < right.key) {
-      return -1;
-    }
-    if (left.key > right.key) {
-      return 1;
-    }
-    return 0;
-  });
+  fields.sort((left, right) =>
+    left.key < right.key ? -1 : left.key > right.key ? 1 : 0,
+  );
 
   const subtags: Array<string> = [...sourceParts];
   for (const field of fields) {
