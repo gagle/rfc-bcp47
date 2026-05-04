@@ -75,13 +75,20 @@ Angular / SCSS / a11y rules are not used.
 `.claude/skills/`:
 
 - `commit` — git workflow (stage by name, conventional commits, squash, push).
-- `verify` — lint → build → test. Run before marking work complete.
-- `release` — version bump + CHANGELOG + tag → CI publishes via OIDC + provenance.
+- `verify` — thin wrapper around `/solo-npm:verify` (lint → build → test). Run before marking work complete.
+- `release` — thin wrapper around `/solo-npm:release` (version bump + CHANGELOG + tag → CI publishes via OIDC + provenance).
 - `review` — five-axis principal review.
 - `testing` — Vitest test templates with BCP 47 examples.
-- `setup` — bundled wizard from `npm-trust@^0.8.0` for OIDC (slash: `/npm-trust:setup`)
-  trust setup / verification. Already trust-bootstrapped, so the wizard's
-  `--only-new` filter short-circuits with "all packages already configured".
+
+The release/verify wrappers compose with the [`gagle/solo-npm`](https://github.com/gagle/solo-npm)
+marketplace plugin. Other lifecycle skills are invoked directly without
+a wrapper:
+
+- `/solo-npm:trust` — OIDC trust setup wizard (rare; for incremental config).
+- `/solo-npm:status` — read-only portfolio dashboard.
+- `/solo-npm:audit` — security audit with risk triage.
+- `/solo-npm:deps` — dep upgrade orchestrator with verify gates.
+- `/solo-npm:init` — fresh-repo bootstrap (umbrella; not needed for this repo).
 
 ## Release flow
 
