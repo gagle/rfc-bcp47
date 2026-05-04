@@ -1,5 +1,5 @@
 ---
-name: release-solo-npm
+name: release
 description: >
   Designed for AI-driven solo dev. Tag-triggered npm release with OIDC
   provenance and ONE human approval — that's the
@@ -26,7 +26,7 @@ review code, no second pair of human eyes. You want releases that are:
 
 This skill drives the whole flow end-to-end with **one** human
 checkpoint (a structured `AskUserQuestion` selector — unmissable,
-unmistakable). Type `/release-solo-npm`, review the plan once, click `Proceed`,
+unmistakable). Type `/solo-npm:release`, review the plan once, click `Proceed`,
 get a notification when the tarball is on npm with provenance.
 
 ## How it works
@@ -76,7 +76,7 @@ Parse the JSON. Branch on `summary` and `issues[].code`:
 |---|---|
 | `summary.fail > 0` | **STOP**, surface the failing issue |
 | `WORKSPACE_NOT_DETECTED`, `REPO_NO_REMOTE`, `WORKFLOWS_NONE` | **STOP** |
-| `PACKAGE_NOT_PUBLISHED` for `rfc-bcp47` | **STOP** — first-publish ceremony needed; see `/npm-trust-setup` |
+| `PACKAGE_NOT_PUBLISHED` for `rfc-bcp47` | **STOP** — first-publish ceremony needed; see `/npm-trust:setup` |
 | `AUTH_NOT_LOGGED_IN` | **Ignore** — tag-triggered CI publishes via OIDC; local auth doesn't matter |
 | `PACKAGE_TRUST_DISCREPANCY` | **Ignore (informational)** — registry has provenance even when `npm trust list` is empty |
 | `WORKFLOWS_AMBIGUOUS` | Should not fire (`--workflow` was passed). If it does, **STOP** and ask the user which workflow is the publish workflow |
@@ -255,32 +255,6 @@ If anything fails, **STOP**. Recovery: fix the issue, restart from
 Phase A. The release commit is on origin but no tag has been pushed
 yet, so the workflow won't run.
 
-### C.4.5 Wait for `ci.yml` to go green on the pushed commit
-
-> **Optional block — strip if your repo has no separate `ci.yml`
-> workflow that runs on push to `main`.**
->
-> Keep this block if any of these are true:
->
-> - Your `ci.yml` runs a **Node version matrix** that `release.yml`
->   doesn't (so ci.yml catches multi-version regressions before tag).
-> - Your `ci.yml` runs **e2e tests** that need credentials/secrets and
->   you want to verify them remotely before tagging.
-> - Your defense-in-depth model says "tag means CI green" — this is
->   what makes that true.
-
-After pushing the commit at C.3 and confirming local `/verify` at C.4,
-wait for the most recent `ci.yml` run on `main` to complete green:
-
-```bash
-RUN_ID=$(gh run list --workflow=ci.yml --branch=main --limit=1 --json databaseId --jq '.[0].databaseId')
-gh run watch "$RUN_ID" --exit-status
-```
-
-If `ci.yml` fails, **STOP**. Recovery: fix the issue, restart from
-Phase A. The release commit is on origin but no tag is pushed yet, so
-nothing is published to npm.
-
 ### C.5 Tag and push the tag
 
 ```bash
@@ -356,7 +330,7 @@ End the skill.
 - Auto-rerun CI on failure (most failures need human investigation).
 - Auto-fallback to classic publish on CI failure (would lose provenance attestation).
 - Auto-create `release.yml` or bootstrap trust on first run — those are
-  the `/npm-trust-setup` skill's job (see
+  the `/npm-trust:setup` skill's job (see
   [`gagle/npm-trust`](https://github.com/gagle/npm-trust)); this skill
   assumes the env is already provisioned.
 - Push branches other than `main` — assumes you're on the canonical
