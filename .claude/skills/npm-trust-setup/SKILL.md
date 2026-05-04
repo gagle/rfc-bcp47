@@ -1,5 +1,5 @@
 ---
-name: setup-npm-trust
+name: npm-trust-setup
 description: >
   Guided wizard to enable or extend npm OIDC Trusted Publishing across the
   packages in the current repo. Resolves the right `npm-trust` invocation,

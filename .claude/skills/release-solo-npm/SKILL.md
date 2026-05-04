@@ -76,7 +76,7 @@ Parse the JSON. Branch on `summary` and `issues[].code`:
 |---|---|
 | `summary.fail > 0` | **STOP**, surface the failing issue |
 | `WORKSPACE_NOT_DETECTED`, `REPO_NO_REMOTE`, `WORKFLOWS_NONE` | **STOP** |
-| `PACKAGE_NOT_PUBLISHED` for `rfc-bcp47` | **STOP** — first-publish ceremony needed; see `/setup-npm-trust` |
+| `PACKAGE_NOT_PUBLISHED` for `rfc-bcp47` | **STOP** — first-publish ceremony needed; see `/npm-trust-setup` |
 | `AUTH_NOT_LOGGED_IN` | **Ignore** — tag-triggered CI publishes via OIDC; local auth doesn't matter |
 | `PACKAGE_TRUST_DISCREPANCY` | **Ignore (informational)** — registry has provenance even when `npm trust list` is empty |
 | `WORKFLOWS_AMBIGUOUS` | Should not fire (`--workflow` was passed). If it does, **STOP** and ask the user which workflow is the publish workflow |
@@ -356,7 +356,7 @@ End the skill.
 - Auto-rerun CI on failure (most failures need human investigation).
 - Auto-fallback to classic publish on CI failure (would lose provenance attestation).
 - Auto-create `release.yml` or bootstrap trust on first run — those are
-  the `/setup-npm-trust` skill's job (see
+  the `/npm-trust-setup` skill's job (see
   [`gagle/npm-trust`](https://github.com/gagle/npm-trust)); this skill
   assumes the env is already provisioned.
 - Push branches other than `main` — assumes you're on the canonical

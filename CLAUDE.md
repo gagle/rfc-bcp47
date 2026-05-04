@@ -79,7 +79,7 @@ Angular / SCSS / a11y rules are not used.
 - `release` — version bump + CHANGELOG + tag → CI publishes via OIDC + provenance.
 - `review` — five-axis principal review.
 - `testing` — Vitest test templates with BCP 47 examples.
-- `setup-npm-trust` — bundled wizard from `npm-trust@0.6.0` for OIDC
+- `npm-trust-setup` — bundled wizard from `npm-trust@^0.7.0` for OIDC
   trust setup / verification. Already trust-bootstrapped, so the wizard's
   `--only-new` filter short-circuits with "all packages already configured".
 
