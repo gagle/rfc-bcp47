@@ -9,6 +9,9 @@
 ### Documentation
 
 - add Built with AI badge ([60c164f](https://github.com/gagle/rfc-bcp47/commit/60c164f))
+- drop "where PRs are disabled" from frontmatter description ([c37f119](https://github.com/gagle/rfc-bcp47/commit/c37f119))
+- revert removal of agent-skills:review enrichment section ([c3b819f](https://github.com/gagle/rfc-bcp47/commit/c3b819f))
+- remove agent-skills:review enrichment section ([01195df](https://github.com/gagle/rfc-bcp47/commit/01195df))
 
 ### Miscellaneous Chores
 
@@ -16,6 +19,7 @@
 - adopt solo-npm marketplace plugin via thin wrappers; npm-trust@^0.9.0 ([c7601c8](https://github.com/gagle/rfc-bcp47/commit/c7601c8))
 - align with solo-npm v0.4.0 + npm-trust v0.8.0; drop ci.yml ([1b9e854](https://github.com/gagle/rfc-bcp47/commit/1b9e854))
 - align with npm-trust@^0.7.0 and release-solo-npm v0.3.0 ([1908bd7](https://github.com/gagle/rfc-bcp47/commit/1908bd7))
+- rename release skill to release-solo-npm (marketplace alignment) ([ab1be42](https://github.com/gagle/rfc-bcp47/commit/ab1be42))
 
 ## [1.4.0](https://github.com/gagle/rfc-bcp47/compare/v1.3.0...v1.4.0) (2026-05-03)
 
