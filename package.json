@@ -63,10 +63,12 @@
     "test:watch": "vitest",
     "test:coverage": "vitest run --coverage",
     "lint": "tsc --noEmit -p tsconfig.examples.json",
+    "prepare": "husky",
     "dev:pages": "pnpm run build && cp dist/index.mjs github-pages/rfc-bcp47.js"
   },
   "devDependencies": {
     "@vitest/coverage-v8": "^4.1.5",
+    "husky": "^9.1.7",
     "npm-trust": "^0.11.0",
     "tsdown": "^0.22.0",
     "typescript": "^6.0.3",
