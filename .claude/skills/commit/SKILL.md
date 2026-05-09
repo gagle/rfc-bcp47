@@ -32,7 +32,7 @@ Composable git workflow with three independent actions. Parse `$ARGUMENTS` for: 
    git commit -m "type(scope): description"
    ```
 
-   Must pass commitlint validation (husky commit-msg hook enforces this).
+   Use conventional commit format (`type(scope): description`).
 
 5. **Verify** — `git log --oneline -1`
 
@@ -76,6 +76,6 @@ Composable git workflow with three independent actions. Parse `$ARGUMENTS` for: 
 - Never use `git add -A` or `git add .` — add files by name
 - Single-line commit messages only — no body, no `Co-Authored-By`
 - Always use `--force-with-lease` over `--force`
-- Commit messages must be commitlint-compatible (conventional commits with enforced scope enum)
+- Commit messages should follow conventional commits format
 - Squash synthesizes a new message from all branch commits — not just the first one
 - If `squash push` is given, run squash first, then push

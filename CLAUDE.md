@@ -65,6 +65,8 @@ Project-local rules live in `.claude/rules/`:
 - `testing.md` — Vitest patterns (18 enforced rules around describe/it
   structure, assertions, mocks). No enforced coverage threshold.
 - `review-criteria.md` — five-axis review checklist.
+- `commits.md` — Conventional Commits format (no runtime enforcement
+  since commitlint was removed; convention documented here for clarity).
 
 User-global conventions in `~/.claude/rules/` (TypeScript / Angular / SCSS /
 a11y) also apply where relevant — but this is a pure-TS library, so the
